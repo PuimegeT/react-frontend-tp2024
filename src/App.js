@@ -9,12 +9,12 @@ import {
     Typography,
     Grid,
     Pagination,
-    createTheme
+    createTheme, Box
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import EditIcon from '@mui/icons-material/Edit';
 import DownloadIcon from '@mui/icons-material/Download';
-import {makeStyles, ThemeProvider} from '@mui/styles';
+import { makeStyles, ThemeProvider } from '@mui/styles';
 
 const theme = createTheme();
 
@@ -63,64 +63,72 @@ function App() {
 
     return (
         <ThemeProvider theme={theme}>
-            <div className="app">
-                <AppBar position="static" className={classes.appBar} color="default">
-                    <Toolbar>
-                        <Typography className={classes.title}>
-                            Ciferica
-                        </Typography>
-                        <div className={classes.toolbarButtons}>
-                            <Button>Prijzen</Button>
-                            <Button>Account aanvragen</Button>
-                            <Button>Over</Button>
-                            <Button>Bibliotheek</Button>
-                            <Button>Contact</Button>
-                            <Button>Sign in</Button>
-                            <Button variant="outlined">Request</Button>
-                        </div>
-                    </Toolbar>
-                </AppBar>
-                <main className="content">
-                    <Paper component="form" className={classes.searchBar}>
-                        <InputBase
-                            className={classes.searchInput}
-                            placeholder="Search"
-                            inputProps={{'aria-label': 'search'}}
-                        />
-                        <IconButton type="submit" aria-label="search">
-                            <SearchIcon/>
-                        </IconButton>
-                    </Paper>
-
-                    <div className={classes.filterButtons}>
-                        <Button variant="contained" color="primary">Meest recent</Button>
-                        <Button variant="outlined">Titel</Button>
-                        <Button variant="outlined">Auteur</Button>
+            <AppBar position="sticky" className={classes.appBar} color="default">
+                <Toolbar>
+                    <Typography className={classes.title}>
+                        Ciferica
+                    </Typography>
+                    <div className={classes.toolbarButtons}>
+                        <Button>Prijzen</Button>
+                        <Button>Account aanvragen</Button>
+                        <Button>Over</Button>
+                        <Button>Bibliotheek</Button>
+                        <Button>Contact</Button>
+                        <Button>Sign in</Button>
+                        <Button variant="outlined">Request</Button>
                     </div>
+                </Toolbar>
+            </AppBar>
+            <Box sx={{ paddingY: 2 }}>
+                <Grid container direction="row" maxWidth="100%">
+                    <Grid item xs={6}>
+                        <Paper component="form" className={classes.searchBar}>
+                            <InputBase
+                                className={classes.searchInput}
+                                placeholder="Search"
+                                inputProps={{ 'aria-label': 'search' }}
+                            />
+                            <IconButton type="submit" aria-label="search">
+                                <SearchIcon />
+                            </IconButton>
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Box display="flex" justifyContent="flex-end" className={classes.filterButtons}>
+                            <Button variant="contained" color="primary">Meest recent</Button>
+                            <Button variant="outlined">Titel</Button>
+                            <Button variant="outlined">Auteur</Button>
+                        </Box>
+                    </Grid>
+                </Grid>
 
-                    <Grid container direction="column">
+                <Grid container direction="column">
+                    <Grid>
                         <Article
                             title="De gevolgen van change management"
                             description="Een structuur die constant veranderdt, werkt dat wel?"
                         />
+                    </Grid>
+                    <Grid>
                         <Article
                             title="Waarom je je gras soms beter niet maait"
                             description="Je gras kan soms beter wat langer zijn!"
                         />
+                    </Grid>
+                    <Grid>
                         <Article
                             title="De toekomst van AI"
                             description="Energie kosten gaan omhoog!"
                         />
                     </Grid>
-
-                    <Pagination className={classes.pagination} count={99} variant="outlined" shape="rounded"/>
-                </main>
-            </div>
+                </Grid>
+                <Pagination className={classes.pagination} count={99} variant="outlined" shape="rounded" />
+            </Box>
         </ThemeProvider>
     );
 }
 
-function Article({title, description}) {
+function Article({ title, description }) {
     const classes = useStyles();
 
     return (
@@ -132,10 +140,10 @@ function Article({title, description}) {
             </div>
             <div>
                 <IconButton>
-                    <EditIcon/>
+                    <EditIcon />
                 </IconButton>
                 <IconButton>
-                    <DownloadIcon/>
+                    <DownloadIcon />
                 </IconButton>
             </div>
         </Paper>
