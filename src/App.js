@@ -1,75 +1,145 @@
 import React from 'react';
-import './App.css';
+import {
+    AppBar,
+    Toolbar,
+    Button,
+    IconButton,
+    InputBase,
+    Paper,
+    Typography,
+    Grid,
+    Pagination,
+    createTheme
+} from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import EditIcon from '@mui/icons-material/Edit';
+import DownloadIcon from '@mui/icons-material/Download';
+import {makeStyles, ThemeProvider} from '@mui/styles';
+
+const theme = createTheme();
+
+const useStyles = makeStyles(() => ({
+    appBar: {
+        marginBottom: theme.spacing(2),
+    },
+    title: {
+        flexGrow: 1,
+        fontSize: '24px',
+        fontWeight: 'bold',
+    },
+    toolbarButtons: {
+        marginLeft: theme.spacing(2),
+    },
+    searchBar: {
+        padding: '2px 4px',
+        display: 'flex',
+        alignItems: 'center',
+        width: 400,
+        marginBottom: theme.spacing(2),
+    },
+    searchInput: {
+        marginLeft: theme.spacing(1),
+        flex: 1,
+    },
+    filterButtons: {
+        marginBottom: theme.spacing(2),
+    },
+    article: {
+        padding: theme.spacing(2),
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: theme.spacing(2),
+    },
+    pagination: {
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: theme.spacing(2),
+    },
+}));
 
 function App() {
-  return (
-      <div className="app">
-        <header className="header">
-          <div className="logo">Ciferica</div>
-          <nav className="nav">
-            <button>Prijzen</button>
-            <button>Account aanvragen</button>
-            <button>Over</button>
-            <button>Bibliotheek</button>
-            <button>Contact</button>
-            <button>Sign in</button>
-            <button className="request-btn">Request</button>
-          </nav>
-        </header>
+    const classes = useStyles();
 
-        <main className="content">
-          <div className="search-bar">
-            <input type="text" placeholder="Search" />
-          </div>
+    return (
+        <ThemeProvider theme={theme}>
+            <div className="app">
+                <AppBar position="static" className={classes.appBar} color="default">
+                    <Toolbar>
+                        <Typography className={classes.title}>
+                            Ciferica
+                        </Typography>
+                        <div className={classes.toolbarButtons}>
+                            <Button>Prijzen</Button>
+                            <Button>Account aanvragen</Button>
+                            <Button>Over</Button>
+                            <Button>Bibliotheek</Button>
+                            <Button>Contact</Button>
+                            <Button>Sign in</Button>
+                            <Button variant="outlined">Request</Button>
+                        </div>
+                    </Toolbar>
+                </AppBar>
+                <main className="content">
+                    <Paper component="form" className={classes.searchBar}>
+                        <InputBase
+                            className={classes.searchInput}
+                            placeholder="Search"
+                            inputProps={{'aria-label': 'search'}}
+                        />
+                        <IconButton type="submit" aria-label="search">
+                            <SearchIcon/>
+                        </IconButton>
+                    </Paper>
 
-          <div className="filter">
-            <button className="active">Meest recent</button>
-            <button>Titel</button>
-            <button>Auteur</button>
-          </div>
+                    <div className={classes.filterButtons}>
+                        <Button variant="contained" color="primary">Meest recent</Button>
+                        <Button variant="outlined">Titel</Button>
+                        <Button variant="outlined">Auteur</Button>
+                    </div>
 
-          <div className="articles">
-            <Article
-                title="De gevolgen van change management"
-                description="Een structuur die constant veranderdt, werkt dat wel?"
-            />
-            <Article
-                title="Waarom je je gras soms beter niet maait"
-                description="Je gras kan soms beter wat langer zijn!"
-            />
-            <Article
-                title="De toekomst van AI"
-                description="Energie kosten gaan omhoog!"
-            />
-          </div>
+                    <Grid container direction="column">
+                        <Article
+                            title="De gevolgen van change management"
+                            description="Een structuur die constant veranderdt, werkt dat wel?"
+                        />
+                        <Article
+                            title="Waarom je je gras soms beter niet maait"
+                            description="Je gras kan soms beter wat langer zijn!"
+                        />
+                        <Article
+                            title="De toekomst van AI"
+                            description="Energie kosten gaan omhoog!"
+                        />
+                    </Grid>
 
-          <div className="pagination">
-            <span className="page-number active">1</span>
-            <span className="page-number">2</span>
-            <span className="page-number">3</span>
-            <span className="ellipsis">...</span>
-            <span className="page-number">67</span>
-            <span className="page-number">68</span>
-          </div>
-        </main>
-      </div>
-  );
+                    <Pagination className={classes.pagination} count={68} variant="outlined" shape="rounded"/>
+                </main>
+            </div>
+        </ThemeProvider>
+    );
 }
 
-function Article({ title, description }) {
-  return (
-      <div className="article">
-        <div className="article-content">
-          <h2>{title}</h2>
-          <p>{description}</p>
-          <button className="read-btn">Lees dit artikel</button>
-        </div>
-        <div className="article-actions">
-          <button className="edit-btn">✏️</button>
-          <button className="download-btn">⬇️</button>
-        </div>
-      </div>
-  );
+function Article({title, description}) {
+    const classes = useStyles();
+
+    return (
+        <Paper className={classes.article}>
+            <div>
+                <Typography variant="h6">{title}</Typography>
+                <Typography variant="body2" color="textSecondary">{description}</Typography>
+                <Button color="primary">Lees dit artikel</Button>
+            </div>
+            <div>
+                <IconButton>
+                    <EditIcon/>
+                </IconButton>
+                <IconButton>
+                    <DownloadIcon/>
+                </IconButton>
+            </div>
+        </Paper>
+    );
 }
 
 export default App;
