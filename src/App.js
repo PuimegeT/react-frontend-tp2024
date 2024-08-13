@@ -36,7 +36,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1>Ciferica</h1>
+          <h1>Test</h1>
           <section>
             <p>Section 1</p>
             <p>Section 2</p>
