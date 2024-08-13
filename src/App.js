@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     AppBar,
     Toolbar,
@@ -58,8 +58,61 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
+const articlesData = [
+    {
+        title: 'De gevolgen van change management',
+        description: 'Een structuur die constant veranderdt, werkt dat wel?',
+        date: '2021-10-01',
+        author: 'J. Doe',
+    },
+    {
+        title: 'Waarom je je gras soms beter niet maait',
+        description: 'Je gras kan soms beter wat langer zijn!',
+        date: '2021-10-02',
+        author: 'J. Doe',
+    },
+    {
+        title: 'De toekomst van AI',
+        description: 'Energie kosten gaan omhoog!',
+        date: '2021-10-03',
+        author: 'JK Rowling',
+    },
+];
+
 function App() {
     const classes = useStyles();
+
+    // State for search query and filter type
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filterType, setFilterType] = useState('Meest recent');
+    const [filteredArticles, setFilteredArticles] = useState(articlesData);
+
+    // Effect to filter articles based on search and filter type
+    useEffect(() => {
+        let filtered = articlesData;
+
+        if (searchQuery) {
+            filtered = filtered.filter(article =>
+                article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                article.description.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+        }
+
+        if (filterType === 'Titel') {
+            filtered = filtered.sort((a, b) => a.title.localeCompare(b.title));
+        }
+
+        if (filterType === 'Meest recent') {
+            filtered = filtered.sort((a, b) => b.date.localeCompare(a.date));
+        }
+
+        if (filterType === 'Auteur') {
+            filtered = filtered.sort((a, b) => a.author.localeCompare(b.author));
+        }
+
+
+        setFilteredArticles(filtered);
+    }, [searchQuery, filterType]);
 
     return (
         <ThemeProvider theme={theme}>
@@ -87,6 +140,8 @@ function App() {
                                 className={classes.searchInput}
                                 placeholder="Search"
                                 inputProps={{ 'aria-label': 'search' }}
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
                             />
                             <IconButton type="submit" aria-label="search">
                                 <SearchIcon />
@@ -95,32 +150,35 @@ function App() {
                     </Grid>
                     <Grid item xs={6}>
                         <Box display="flex" justifyContent="flex-end" className={classes.filterButtons}>
-                            <Button variant="contained" color="primary">Meest recent</Button>
-                            <Button variant="outlined">Titel</Button>
-                            <Button variant="outlined">Auteur</Button>
+                            <Button
+                                variant={filterType === 'Meest recent' ? 'contained' : 'outlined'}
+                                color="primary"
+                                onClick={() => setFilterType('Meest recent')}
+                            >
+                                Meest recent
+                            </Button>
+                            <Button
+                                variant={filterType === 'Titel' ? 'contained' : 'outlined'}
+                                onClick={() => setFilterType('Titel')}
+                            >
+                                Titel
+                            </Button>
+                            <Button
+                                variant={filterType === 'Auteur' ? 'contained' : 'outlined'}
+                                onClick={() => setFilterType('Auteur')}
+                            >
+                                Auteur
+                            </Button>
                         </Box>
                     </Grid>
                 </Grid>
 
                 <Grid container direction="column">
-                    <Grid>
-                        <Article
-                            title="De gevolgen van change management"
-                            description="Een structuur die constant veranderdt, werkt dat wel?"
-                        />
-                    </Grid>
-                    <Grid>
-                        <Article
-                            title="Waarom je je gras soms beter niet maait"
-                            description="Je gras kan soms beter wat langer zijn!"
-                        />
-                    </Grid>
-                    <Grid>
-                        <Article
-                            title="De toekomst van AI"
-                            description="Energie kosten gaan omhoog!"
-                        />
-                    </Grid>
+                    {filteredArticles.map((article, index) => (
+                        <Grid item key={index}>
+                            <Article title={article.title} description={article.description} />
+                        </Grid>
+                    ))}
                 </Grid>
                 <Pagination className={classes.pagination} count={99} variant="outlined" shape="rounded" />
             </Box>
