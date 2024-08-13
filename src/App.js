@@ -36,11 +36,12 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <LambdaDemo />
+          <h1>Ciferica</h1>
+          <section>
+            <p>Section 1</p>
+            <p>Section 2</p>
+            <p>Section 3</p>
+          </section>
         </header>
       </div>
     )
