@@ -113,7 +113,7 @@ function App() {
                         />
                     </Grid>
 
-                    <Pagination className={classes.pagination} count={68} variant="outlined" shape="rounded"/>
+                    <Pagination className={classes.pagination} count={99} variant="outlined" shape="rounded"/>
                 </main>
             </div>
         </ThemeProvider>
