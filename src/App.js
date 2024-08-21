@@ -17,8 +17,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import EditIcon from '@mui/icons-material/Edit';
 import DownloadIcon from '@mui/icons-material/Download';
 import { makeStyles, ThemeProvider } from '@mui/styles';
-import { getAuth } from "firebase/auth";
-import {getDatabase} from "firebase/database";
 import writeArticle from "./service/WriteTester";
 
 const firebaseConfig = {
@@ -106,7 +104,6 @@ const app = initializeApp(firebaseConfig)
 
 function App() {
     const classes = useStyles()
-
 
     // State for search query and filter type
     const [searchQuery, setSearchQuery] = useState('');
