@@ -103,8 +103,6 @@ const articlesData = [
 ];
 
 const app = initializeApp(firebaseConfig)
-const auth = getAuth(app);
-const database = getDatabase(app);
 
 function App() {
     const classes = useStyles()
