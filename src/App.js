@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { initializeApp } from 'firebase/app';
 import {
     AppBar,
     Toolbar,
@@ -9,12 +10,34 @@ import {
     Typography,
     Grid,
     Pagination,
-    createTheme, Box
+    createTheme,
+    Box,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import EditIcon from '@mui/icons-material/Edit';
 import DownloadIcon from '@mui/icons-material/Download';
 import { makeStyles, ThemeProvider } from '@mui/styles';
+import { getAuth } from "firebase/auth";
+import {getDatabase} from "firebase/database";
+import writeArticle from "./service/WriteTester";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyDNQbdut4CMcUvdNVVrNPN5_oIVYWconG4",
+
+    authDomain: "tp-zomerproject-db.firebaseapp.com",
+
+    databaseURL: "https://tp-zomerproject-db-default-rtdb.europe-west1.firebasedatabase.app",
+
+    projectId: "tp-zomerproject-db",
+
+    storageBucket: "tp-zomerproject-db.appspot.com",
+
+    messagingSenderId: "590013927297",
+
+    appId: "1:590013927297:web:de9f95e521166844042280",
+
+    measurementId: "G-NM1QXV5M7M"
+};
 
 const theme = createTheme();
 
@@ -79,8 +102,13 @@ const articlesData = [
     },
 ];
 
+const app = initializeApp(firebaseConfig)
+const auth = getAuth(app);
+const database = getDatabase(app);
+
 function App() {
-    const classes = useStyles();
+    const classes = useStyles()
+
 
     // State for search query and filter type
     const [searchQuery, setSearchQuery] = useState('');
@@ -92,7 +120,7 @@ function App() {
         let filtered = articlesData;
 
         if (searchQuery) {
-            filtered = filtered.filter(article =>
+            filtered = filtered.filter((article) =>
                 article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 article.description.toLowerCase().includes(searchQuery.toLowerCase())
             );
@@ -109,7 +137,6 @@ function App() {
         if (filterType === 'Auteur') {
             filtered = filtered.sort((a, b) => a.author.localeCompare(b.author));
         }
-
 
         setFilteredArticles(filtered);
     }, [searchQuery, filterType]);
@@ -188,9 +215,9 @@ function App() {
 
 function Article({ title, description }) {
     const classes = useStyles();
-
     return (
         <Paper className={classes.article}>
+            <Button color="primary" onClick={() => writeArticle(app, "nieuw")}>Artikel</Button>
             <div>
                 <Typography variant="h6">{title}</Typography>
                 <Typography variant="body2" color="textSecondary">{description}</Typography>
